@@ -3,11 +3,17 @@ export interface ResumeAnalysis {
   fileName: string
   uploadDate: string
   overallScore: number
+  categoryScores: {
+    impact: number
+    presentation: number
+    competencies: number
+  }
   scores: {
     impact: number
     presentation: number
     competencies: number
   }
+  atsScore: number
   feedback: {
     impact: FeedbackSection
     presentation: FeedbackSection
@@ -48,17 +54,24 @@ export async function analyzeResume(file: File): Promise<ResumeAnalysis> {
   const presentationScore = Math.floor(Math.random() * 25) + 70 // 70-95
   const competenciesScore = Math.floor(Math.random() * 35) + 60 // 60-95
   const overallScore = Math.round((impactScore + presentationScore + competenciesScore) / 3)
+  const atsScore = Math.floor(Math.random() * 20) + 75 // 75-95
 
   const analysis: ResumeAnalysis = {
     id: `analysis_${Date.now()}`,
     fileName: file.name,
     uploadDate: new Date().toISOString(),
     overallScore,
+    categoryScores: {
+      impact: impactScore,
+      presentation: presentationScore,
+      competencies: competenciesScore,
+    },
     scores: {
       impact: impactScore,
       presentation: presentationScore,
       competencies: competenciesScore,
     },
+    atsScore,
     feedback: {
       impact: {
         score: impactScore,
@@ -141,7 +154,7 @@ export async function analyzeResume(file: File): Promise<ResumeAnalysis> {
       },
     ],
     atsCompatibility: {
-      score: Math.floor(Math.random() * 20) + 75, // 75-95
+      score: atsScore,
       issues: [
         "Some section headers may not be recognized by all ATS systems",
         "Consider using standard section names like 'Professional Experience'",

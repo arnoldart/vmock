@@ -1,10 +1,12 @@
 import { neon } from "@neondatabase/serverless"
+import bcrypt from 'bcryptjs'
 
 const sql = neon(process.env.DATABASE_URL!)
 
 export interface VMockUser {
   id: number
   email: string
+  password_hash?: string
   full_name?: string
   provider: string
   created_at: string
@@ -41,6 +43,25 @@ export async function createUser(email: string, fullName?: string, provider = "e
     RETURNING *
   `
   return result[0] as VMockUser
+}
+
+export async function createUserWithPassword(email: string, password: string, fullName?: string, provider = "email") {
+  const hashedPassword = await bcrypt.hash(password, 10)
+  
+  const result = await sql`
+    INSERT INTO vmock_users (email, password_hash, full_name, provider)
+    VALUES (${email}, ${hashedPassword}, ${fullName}, ${provider})
+    RETURNING *
+  `
+  return result[0] as VMockUser
+}
+
+export async function authenticateUser(email: string, password: string) {
+  const user = await getUserByEmail(email)
+  if (!user || !user.password_hash) return null
+  
+  const isValid = await bcrypt.compare(password, user.password_hash)
+  return isValid ? user : null
 }
 
 export async function getUserByEmail(email: string) {

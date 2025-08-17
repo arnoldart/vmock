@@ -4,7 +4,7 @@ import { getAnalysisResultsByUserId } from "@/lib/database"
 export async function GET(request: NextRequest) {
   try {
     // In a real app, you'd get the user ID from authentication
-    const userId = 1 // Demo user ID - replace with actual auth
+    const userId = 3 // Demo user ID - replace with actual auth
     const history = await getAnalysisResultsByUserId(userId)
 
     const formattedHistory = history.map((result) => ({

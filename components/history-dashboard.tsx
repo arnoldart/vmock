@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -10,103 +10,49 @@ import type { ResumeAnalysis } from "@/lib/ai-analysis"
 import { ArrowUpIcon } from "@/components/icons/arrow-up-icon"
 import { ArrowDownIcon } from "@/components/icons/arrow-down-icon"
 
-// Mock history data for demonstration
-const mockHistory: ResumeAnalysis[] = [
-  {
-    id: "analysis_1703123456789",
-    fileName: "John_Doe_Resume_v3.pdf",
-    uploadDate: "2024-08-15T10:30:00Z",
-    overallScore: 82,
-    scores: { impact: 85, presentation: 78, competencies: 83 },
-    feedback: {
-      impact: {
-        score: 85,
-        strengths: ["Strong quantified achievements", "Clear progression shown"],
-        improvements: ["Add more metrics to earlier roles"],
-        details: "Good use of quantified achievements in recent positions.",
-      },
-      presentation: {
-        score: 78,
-        strengths: ["Clean layout", "Consistent formatting"],
-        improvements: ["Optimize for ATS", "Better section headers"],
-        details: "Professional appearance with minor ATS improvements needed.",
-      },
-      competencies: {
-        score: 83,
-        strengths: ["Relevant skills listed", "Good industry alignment"],
-        improvements: ["Add more keywords", "Include certifications"],
-        details: "Strong technical foundation with room for keyword optimization.",
-      },
-    },
-    lineByLineFeedback: [],
-    atsCompatibility: { score: 80, issues: [], recommendations: [] },
-    recommendations: [],
-  },
-  {
-    id: "analysis_1703023456789",
-    fileName: "John_Doe_Resume_v2.pdf",
-    uploadDate: "2024-08-10T14:15:00Z",
-    overallScore: 75,
-    scores: { impact: 72, presentation: 80, competencies: 73 },
-    feedback: {
-      impact: {
-        score: 72,
-        strengths: ["Some quantified achievements"],
-        improvements: ["Need more specific metrics", "Strengthen action verbs"],
-        details: "Moderate use of quantified achievements with room for improvement.",
-      },
-      presentation: {
-        score: 80,
-        strengths: ["Good visual hierarchy", "Professional fonts"],
-        improvements: ["Improve spacing", "Standardize formatting"],
-        details: "Well-presented with minor formatting inconsistencies.",
-      },
-      competencies: {
-        score: 73,
-        strengths: ["Core skills present"],
-        improvements: ["Add industry keywords", "Include soft skills"],
-        details: "Basic competencies covered but needs enhancement.",
-      },
-    },
-    lineByLineFeedback: [],
-    atsCompatibility: { score: 75, issues: [], recommendations: [] },
-    recommendations: [],
-  },
-  {
-    id: "analysis_1702923456789",
-    fileName: "John_Doe_Resume_v1.pdf",
-    uploadDate: "2024-08-05T09:45:00Z",
-    overallScore: 68,
-    scores: { impact: 65, presentation: 72, competencies: 67 },
-    feedback: {
-      impact: {
-        score: 65,
-        strengths: ["Clear job responsibilities"],
-        improvements: ["Add quantified results", "Use stronger action verbs"],
-        details: "Basic impact statements need quantification and strengthening.",
-      },
-      presentation: {
-        score: 72,
-        strengths: ["Readable format"],
-        improvements: ["Improve layout", "Better use of whitespace"],
-        details: "Decent presentation but could be more polished.",
-      },
-      competencies: {
-        score: 67,
-        strengths: ["Basic skills listed"],
-        improvements: ["Expand skill set", "Add technical proficiencies"],
-        details: "Limited competencies section needs expansion.",
-      },
-    },
-    lineByLineFeedback: [],
-    atsCompatibility: { score: 70, issues: [], recommendations: [] },
-    recommendations: [],
-  },
-]
 
+// Mock history data for demonstration - will be replaced with API call
 export function HistoryDashboard() {
   const [selectedAnalyses, setSelectedAnalyses] = useState<string[]>([])
   const [showComparison, setShowComparison] = useState(false)
+  const [mockHistory, setMockHistory] = useState<ResumeAnalysis[]>([])
+  const [loading, setLoading] = useState(false)
+
+  // Fetch real data from API (commented out for now, using mock data)
+  useEffect(() => {
+    const fetchHistory = async () => {
+      setLoading(true)
+      try {
+        const response = await fetch('/api/user/history')
+        if (response.ok) {
+          const data = await response.json()
+          // Transform API data to match ResumeAnalysis interface
+          const transformedData: ResumeAnalysis[] = data.history.map((item: any) => ({
+            id: item.id.toString(),
+            fileName: item.filename,
+            uploadDate: item.uploadDate,
+            overallScore: item.overallScore,
+            categoryScores: item.categoryScores,
+            scores: item.categoryScores,
+            atsScore: item.atsScore,
+            feedback: item.analysisData?.feedback || {},
+            lineByLineFeedback: item.analysisData?.lineByLineFeedback || [],
+            atsCompatibility: item.analysisData?.atsCompatibility || { score: item.atsScore, issues: [], recommendations: [] },
+            recommendations: item.analysisData?.recommendations || [],
+          }))
+          setMockHistory(transformedData)
+          console.log(transformedData)
+        }
+
+      } catch (error) {
+        console.error('Failed to fetch history:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchHistory()
+  }, [])
 
   const getScoreColor = (score: number) => {
     if (score >= 85) return "text-green-600"
@@ -163,15 +109,43 @@ export function HistoryDashboard() {
     return <ComparisonView analysis1={analysis1} analysis2={analysis2} onBack={() => setShowComparison(false)} />
   }
 
+  if (loading) {
+    return (
+      <div className="max-w-6xl mx-auto space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-serif">Resume History</h1>
+          <p className="text-lg text-muted-foreground">Loading your analysis history...</p>
+        </div>
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    )
+  }
+
+  if (mockHistory.length === 0) {
+    return (
+      <div className="max-w-6xl mx-auto space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-serif">Resume History</h1>
+          <p className="text-lg text-muted-foreground">No analysis history found</p>
+        </div>
+        <div className="text-center">
+          <Button size="lg" asChild>
+            <a href="/upload">Upload Your First Resume</a>
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-serif">Resume History</h1>
         <p className="text-lg text-muted-foreground">Track your progress and compare different versions</p>
       </div>
 
-      {/* Progress Overview */}
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="font-serif">Progress Overview</CardTitle>
@@ -185,17 +159,17 @@ export function HistoryDashboard() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-secondary mb-1">
-                +{mockHistory[0].overallScore - mockHistory[mockHistory.length - 1].overallScore}
+                +{mockHistory.length > 1 ? mockHistory[0].overallScore - mockHistory[mockHistory.length - 1].overallScore : 0}
               </div>
               <div className="text-sm text-muted-foreground">Score Improvement</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-accent mb-1">{mockHistory[0].overallScore}</div>
+              <div className="text-2xl font-bold text-accent mb-1">{mockHistory.length > 0 ? mockHistory[0].overallScore : 0}</div>
               <div className="text-sm text-muted-foreground">Latest Score</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-foreground mb-1">
-                {Math.round(mockHistory.reduce((sum, analysis) => sum + analysis.overallScore, 0) / mockHistory.length)}
+                {mockHistory.length > 0 ? Math.round(mockHistory.reduce((sum, analysis) => sum + analysis.overallScore, 0) / mockHistory.length) : 0}
               </div>
               <div className="text-sm text-muted-foreground">Average Score</div>
             </div>
@@ -203,7 +177,6 @@ export function HistoryDashboard() {
         </CardContent>
       </Card>
 
-      {/* Comparison Tools */}
       <Card>
         <CardHeader>
           <CardTitle className="font-serif">Compare Resumes</CardTitle>
@@ -230,7 +203,6 @@ export function HistoryDashboard() {
         </CardContent>
       </Card>
 
-      {/* History List */}
       <div className="space-y-4">
         <h2 className="text-2xl font-bold font-serif">Analysis History</h2>
         <div className="space-y-4">
@@ -331,7 +303,6 @@ export function HistoryDashboard() {
                         size="sm"
                         onClick={(e) => {
                           e.stopPropagation()
-                          // Store analysis in sessionStorage and redirect to dashboard
                           sessionStorage.setItem("currentAnalysis", JSON.stringify(analysis))
                           window.location.href = "/dashboard"
                         }}
@@ -348,7 +319,6 @@ export function HistoryDashboard() {
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex justify-center">
         <Button size="lg" asChild>
           <a href="/upload">Upload New Resume</a>

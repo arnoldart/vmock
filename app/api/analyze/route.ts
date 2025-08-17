@@ -1,9 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { getServerSession } from "next-auth/next"
 import { analyzeResume } from "@/lib/ai-analysis"
-import { createResume, updateResumeStatus, createAnalysisResult } from "@/lib/database"
+import { createResume, updateResumeStatus, createAnalysisResult, getUserByEmail } from "@/lib/database"
 
 export async function POST(request: NextRequest) {
   try {
+    // Get session for authenticated user
+    const session = await getServerSession()
+    
     const formData = await request.formData()
     const file = formData.get("file") as File
 
@@ -23,8 +27,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "File size exceeds 5MB limit." }, { status: 400 })
     }
 
-    // In a real app, you'd get the user ID from authentication
-    const userId = 1 // Demo user ID - replace with actual auth
+    // Get user ID from session or use test user
+    let userId = 1 // Default test user
+    if (session?.user?.email) {
+      const user = await getUserByEmail(session.user.email)
+      if (user) {
+        userId = user.id
+      }
+    }
 
     // Create resume record in database
     const resume = await createResume(
