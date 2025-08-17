@@ -7,6 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
+import { UploadIcon } from "@/components/icons/upload-icon"
+import { PdfIcon } from "@/components/icons/pdf-icon"
+import { DocxIcon } from "@/components/icons/docx-icon"
+import { SuccessIcon } from "@/components/icons/success-icon"
 
 interface UploadState {
   file: File | null
@@ -176,17 +180,9 @@ export function ResumeUpload() {
 
   const getFileIcon = (type: string) => {
     if (type === "application/pdf") {
-      return (
-        <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-        </svg>
-      )
+      return <PdfIcon className="w-8 h-8 text-red-500" />
     }
-    return (
-      <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-      </svg>
-    )
+    return <DocxIcon className="w-8 h-8 text-blue-500" />
   }
 
   return (
@@ -211,14 +207,7 @@ export function ResumeUpload() {
             >
               <div className="flex flex-col items-center space-y-4">
                 <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                    />
-                  </svg>
+                  <UploadIcon className="w-8 h-8 text-primary" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Drop your resume here</h3>
@@ -291,14 +280,7 @@ export function ResumeUpload() {
           {uploadState.success && (
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-secondary/10 rounded-lg flex items-center justify-center mx-auto">
-                <svg className="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <SuccessIcon className="w-8 h-8 text-secondary" />
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-secondary mb-2">Analysis Complete!</h3>

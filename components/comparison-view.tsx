@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import type { ResumeAnalysis } from "@/lib/ai-analysis"
+import { ArrowUpIcon } from "@/components/icons/arrow-up-icon"
+import { ArrowDownIcon } from "@/components/icons/arrow-down-icon"
 
 interface ComparisonViewProps {
   analysis1: ResumeAnalysis
@@ -30,26 +32,13 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
     if (diff > 0) {
       return (
         <div className="flex items-center text-green-600">
-          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fillRule="evenodd"
-              d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-          +{diff}
+          <ArrowUpIcon className="w-4 h-4 mr-1" />+{diff}
         </div>
       )
     } else if (diff < 0) {
       return (
         <div className="flex items-center text-red-600">
-          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fillRule="evenodd"
-              d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <ArrowDownIcon className="w-4 h-4 mr-1" />
           {diff}
         </div>
       )
