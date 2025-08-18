@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     const convertResponse = await fetch('https://v2.convertapi.com/convert/pdf/to/txt', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer skhuhT2DctwhTPHNmGfFOVl3unUgrSMV'
+        'Authorization': `Bearer ${process.env.CONVERT_API_KEY}`
       },
       body: formData
     })
