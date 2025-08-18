@@ -14,8 +14,7 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 })
     }
-
-    // Validate file type and size
+        // Validate file type and size
     const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
     const maxSize = 5 * 1024 * 1024 // 5MB
 
@@ -27,8 +26,33 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "File size exceeds 5MB limit." }, { status: 400 })
     }
 
-    // Get user ID from session or use test user
-    let userId = 1 // Default test user
+    const convertResponse = await fetch('https://v2.convertapi.com/convert/pdf/to/txt', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer skhuhT2DctwhTPHNmGfFOVl3unUgrSMV'
+      },
+      body: formData
+    })
+
+    if (!convertResponse.ok) {
+      throw new Error(`ConvertAPI failed: ${convertResponse.status} ${convertResponse.statusText}`)
+    }
+
+    const convertResult = await convertResponse.json()
+    // console.log("Conversion result:", convertResult)
+
+    // Extract text content from the FileData (base64 decoded)
+    let extractedText = ""
+    if (convertResult.Files && convertResult.Files.length > 0) {
+      const fileData = convertResult.Files[0].FileData
+      // Decode base64 to get the actual text content
+      extractedText = Buffer.from(fileData, 'base64').toString('utf-8')
+    }
+
+    // console.log("Extracted text:", extractedText)
+
+    // // Get user ID from session or use test user
+    let userId;
     if (session?.user?.email) {
       const user = await getUserByEmail(session.user.email)
       if (user) {
@@ -36,9 +60,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Create resume record in database
+    // // Create resume record in database
     const resume = await createResume(
-      userId,
+      userId!,
       `resume_${Date.now()}.${file.type.includes("pdf") ? "pdf" : "docx"}`,
       file.name,
       file.size,
@@ -52,11 +76,13 @@ export async function POST(request: NextRequest) {
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
     // Analyze the resume (simulated AI analysis)
-    const analysisResult = await analyzeResume(file)
+    const analysisResult = await analyzeResume(extractedText)
+
+    console.log(analysisResult)
 
     const savedAnalysis = await createAnalysisResult(
       resume.id,
-      userId,
+      userId!,
       analysisResult.overallScore,
       analysisResult.categoryScores.impact,
       analysisResult.categoryScores.presentation,

@@ -107,30 +107,30 @@ export function FeedbackDashboard() {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="mb-2">
-                <div className={`text-2xl font-bold ${getScoreColor(analysis.scores.impact)}`}>
-                  {analysis.scores.impact}
+                <div className={`text-2xl font-bold ${getScoreColor(analysis.feedback.impact.score)}`}>
+                  {analysis.feedback.impact.score}
                 </div>
                 <div className="text-sm font-medium">Impact</div>
               </div>
-              <Progress value={analysis.scores.impact} className="h-2" />
+              <Progress value={analysis.feedback.impact.score} className="h-2" />
             </div>
             <div className="text-center">
               <div className="mb-2">
-                <div className={`text-2xl font-bold ${getScoreColor(analysis.scores.presentation)}`}>
-                  {analysis.scores.presentation}
+                <div className={`text-2xl font-bold ${getScoreColor(analysis.feedback.presentation.score)}`}>
+                  {analysis.feedback.presentation.score}
                 </div>
                 <div className="text-sm font-medium">Presentation</div>
               </div>
-              <Progress value={analysis.scores.presentation} className="h-2" />
+              <Progress value={analysis.feedback.presentation.score} className="h-2" />
             </div>
             <div className="text-center">
               <div className="mb-2">
-                <div className={`text-2xl font-bold ${getScoreColor(analysis.scores.competencies)}`}>
-                  {analysis.scores.competencies}
+                <div className={`text-2xl font-bold ${getScoreColor(analysis.feedback.competencies.score)}`}>
+                  {analysis.feedback.competencies.score}
                 </div>
                 <div className="text-sm font-medium">Competencies</div>
               </div>
-              <Progress value={analysis.scores.competencies} className="h-2" />
+              <Progress value={analysis.feedback.competencies.score} className="h-2" />
             </div>
           </div>
         </CardContent>
@@ -149,8 +149,8 @@ export function FeedbackDashboard() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between font-serif">
                 Impact Analysis
-                <Badge variant="secondary" className={getScoreColor(analysis.scores.impact)}>
-                  {analysis.scores.impact}/100
+                <Badge variant="secondary" className={getScoreColor(analysis.scores?.impact)}>
+                  {analysis.scores?.impact}/100
                 </Badge>
               </CardTitle>
               <CardDescription>{analysis.feedback.impact.details}</CardDescription>
@@ -195,8 +195,8 @@ export function FeedbackDashboard() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between font-serif">
                 Presentation Analysis
-                <Badge variant="secondary" className={getScoreColor(analysis.scores.presentation)}>
-                  {analysis.scores.presentation}/100
+                <Badge variant="secondary" className={getScoreColor(analysis.scores?.presentation)}>
+                  {analysis.scores?.presentation}/100
                 </Badge>
               </CardTitle>
               <CardDescription>{analysis.feedback.presentation.details}</CardDescription>
@@ -241,8 +241,8 @@ export function FeedbackDashboard() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between font-serif">
                 Competencies Analysis
-                <Badge variant="secondary" className={getScoreColor(analysis.scores.competencies)}>
-                  {analysis.scores.competencies}/100
+                <Badge variant="secondary" className={getScoreColor(analysis.scores?.competencies)}>
+                  {analysis.scores?.competencies}/100
                 </Badge>
               </CardTitle>
               <CardDescription>{analysis.feedback.competencies.details}</CardDescription>
