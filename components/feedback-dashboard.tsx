@@ -75,7 +75,6 @@ export function FeedbackDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      {/* Header Section */}
       <div className="text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-serif">Your Resume Analysis</h1>
         <p className="text-lg text-muted-foreground mb-2">Analysis for: {analysis.fileName}</p>
@@ -84,7 +83,6 @@ export function FeedbackDashboard() {
         </p>
       </div>
 
-      {/* Overall Score Section */}
       <Card className="shadow-lg">
         <CardHeader className="text-center">
           <CardTitle className="font-serif">Overall Score</CardTitle>
@@ -106,7 +104,6 @@ export function FeedbackDashboard() {
             </div>
           </div>
 
-          {/* Category Scores */}
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="mb-2">
@@ -139,7 +136,6 @@ export function FeedbackDashboard() {
         </CardContent>
       </Card>
 
-      {/* Detailed Feedback Tabs */}
       <Tabs defaultValue="impact" className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="impact">Impact</TabsTrigger>
@@ -148,7 +144,6 @@ export function FeedbackDashboard() {
           <TabsTrigger value="line-by-line">Line-by-Line</TabsTrigger>
         </TabsList>
 
-        {/* Impact Tab */}
         <TabsContent value="impact">
           <Card>
             <CardHeader>
@@ -195,7 +190,6 @@ export function FeedbackDashboard() {
           </Card>
         </TabsContent>
 
-        {/* Presentation Tab */}
         <TabsContent value="presentation">
           <Card>
             <CardHeader>
@@ -242,7 +236,6 @@ export function FeedbackDashboard() {
           </Card>
         </TabsContent>
 
-        {/* Competencies Tab */}
         <TabsContent value="competencies">
           <Card>
             <CardHeader>
@@ -289,7 +282,6 @@ export function FeedbackDashboard() {
           </Card>
         </TabsContent>
 
-        {/* Line-by-Line Tab */}
         <TabsContent value="line-by-line">
           <Card>
             <CardHeader>
@@ -330,9 +322,7 @@ export function FeedbackDashboard() {
         </TabsContent>
       </Tabs>
 
-      {/* ATS Compatibility & Recommendations */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* ATS Compatibility */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between font-serif">
@@ -370,7 +360,6 @@ export function FeedbackDashboard() {
           </CardContent>
         </Card>
 
-        {/* Overall Recommendations */}
         <Card>
           <CardHeader>
             <CardTitle className="font-serif">Key Recommendations</CardTitle>
@@ -391,7 +380,6 @@ export function FeedbackDashboard() {
         </Card>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Button size="lg" asChild>
           <a href="/upload">Analyze Another Resume</a>

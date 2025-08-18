@@ -52,7 +52,6 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-serif">Resume Comparison</h1>
@@ -63,7 +62,6 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
         </Button>
       </div>
 
-      {/* Overall Comparison */}
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="font-serif">Overall Score Comparison</CardTitle>
@@ -122,7 +120,6 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
         </CardContent>
       </Card>
 
-      {/* Category Comparison */}
       <Card>
         <CardHeader>
           <CardTitle className="font-serif">Category Breakdown</CardTitle>
@@ -130,7 +127,6 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {/* Impact Comparison */}
             <div>
               <h4 className="font-semibold mb-3">Impact</h4>
               <div className="grid md:grid-cols-2 gap-6">
@@ -158,7 +154,6 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
               </div>
             </div>
 
-            {/* Presentation Comparison */}
             <div>
               <h4 className="font-semibold mb-3">Presentation</h4>
               <div className="grid md:grid-cols-2 gap-6">
@@ -186,7 +181,6 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
               </div>
             </div>
 
-            {/* Competencies Comparison */}
             <div>
               <h4 className="font-semibold mb-3">Competencies</h4>
               <div className="grid md:grid-cols-2 gap-6">
@@ -217,7 +211,6 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
         </CardContent>
       </Card>
 
-      {/* Key Insights */}
       <Card>
         <CardHeader>
           <CardTitle className="font-serif">Key Insights</CardTitle>
@@ -246,7 +239,6 @@ export function ComparisonView({ analysis1, analysis2, onBack }: ComparisonViewP
         </CardContent>
       </Card>
 
-      {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Button size="lg" asChild>
           <a href="/upload">Upload New Version</a>

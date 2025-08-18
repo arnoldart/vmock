@@ -23,17 +23,35 @@ export function Header() {
               VMock
             </Link>
           </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link href="/upload" className="text-muted-foreground hover:text-foreground transition-colors">
-              Upload Resume
-            </Link>
-            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
-              Dashboard
-            </Link>
-            <Link href="/history" className="text-muted-foreground hover:text-foreground transition-colors">
-              History
-            </Link>
+          
+          <nav className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
+            {session ? (
+              <>
+                <Link href="/upload" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Upload Resume
+                </Link>
+                <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Dashboard
+                </Link>
+                <Link href="/history" className="text-muted-foreground hover:text-foreground transition-colors">
+                  History
+                </Link>
+              </>
+            ) : (
+              <>
+                <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Features
+                </a>
+                <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">
+                  How It Works
+                </a>
+                <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Pricing
+                </a>
+              </>
+            )}
           </nav>
+          
           <div className="flex items-center space-x-4">
             {status === "loading" ? (
               <Button variant="outline" size="sm" disabled>
@@ -50,7 +68,7 @@ export function Header() {
               </>
             ) : (
               <Button variant="outline" size="sm" asChild>
-                <a href="/">Sign In</a>
+                <Link href="/auth">Sign In</Link>
               </Button>
             )}
           </div>

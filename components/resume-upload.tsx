@@ -297,7 +297,6 @@ export function ResumeUpload() {
         </CardContent>
       </Card>
 
-      {/* Information Cards */}
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
